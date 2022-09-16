@@ -38,7 +38,7 @@ const server = http.createServer((req, res) => {
                         }
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'text/html');
-                        fs.createReadStream(filePath).pipe(res);    //taken a file and constructed it into the response
+                        Fs.createReadStream(filePath).pipe(res);    //taken a file and constructed it into the response
 
                 }) // checking if the file exist
             }
