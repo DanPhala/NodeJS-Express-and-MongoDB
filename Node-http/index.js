@@ -15,8 +15,12 @@ const server = http.createServer((req, res) => {
     //Examine the method
     if(req.method == 'GET'){
             var fileUrl;    //Initializing a variable
-            if(req.url == '/') fileUrl = '/index.html';
-            else fileUrl = req.url;
+            if(req.url == '/') {
+                fileUrl = '/index.html';
+            }
+            else{
+                fileUrl = req.url;
+            } 
 
             var filePath = path.resolve('./public' +fileUrl);
             const fileExt = path.extname(filePath);
