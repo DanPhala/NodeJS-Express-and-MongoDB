@@ -1,6 +1,6 @@
 //configure to use node http module
 const http = require('http');
-const fs = require('fs');
+const Fs = require('fs');
 const path = require('path');   //Allow to specify path for the files to be read
 
 
@@ -22,17 +22,17 @@ const server = http.createServer((req, res) => {
                 fileUrl = req.url;
             } 
 
-            var filePath = path.resolve('./public' +fileUrl);
+            var filePath = path.resolve('./public' + fileUrl);
             const fileExt = path.extname(filePath);
 
             if(fileExt == '.html'){
                 //we know the file is html
-                fs.exists(filePath, (exists) => {
+                Fs.exists(filePath, (exists) => {
                     //Callback function
                         if(!exists){
                             res.statusCode = 404;
                             res.setHeader('Content-Type','text/html' );
-                            res.end('<html><body><h1>Error 404: ' + fileUrl + '<h1></body></html>');
+                            res.end('<html><body><h1>Error 404: ' + fileUrl + ' is not found<h1></body></html>');
 
                             return;
                         }
