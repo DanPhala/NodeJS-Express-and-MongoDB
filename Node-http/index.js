@@ -14,7 +14,7 @@ const server = http.createServer((req, res) => {
 
     //Examine the method
     if(req.method == 'GET'){
-            var fileUrl;
+            var fileUrl;    //Initializing a variable
             if(req.url == '/') fileUrl = '/index.html';
             else fileUrl = req.url;
 
