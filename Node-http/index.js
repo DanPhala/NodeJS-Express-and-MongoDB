@@ -1,5 +1,5 @@
 //configure to use node http module
-const http = require('htpp');
+const http = require('http');
 
 const hostname = 'localhost';
 const port = 3000;
