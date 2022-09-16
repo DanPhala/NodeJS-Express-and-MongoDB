@@ -1,5 +1,8 @@
 //configure to use node http module
 const http = require('http');
+const fs = require('fs');
+const path = require('path');   //Allow to specify path for the files to be read
+
 
 const hostname = 'localhost';
 const port = 3000;
@@ -7,7 +10,51 @@ const port = 3000;
 //Setting up the server
 //request and server
 const server = http.createServer((req, res) => {
-    console.log(req.headers); //putting the headers of the incoming request
+    console.log("Request for " + req.url + ' by method ' + req.method); //putting the headers of the incoming request
+
+    //Examine the method
+    if(req.method == 'GET'){
+            var fileUrl;
+            if(req.url == '/') fileUrl = '/index.html';
+            else fileUrl = req.url;
+
+            var filePath = path.resolve('./public' +fileUrl);
+            const fileExt = path.extname(filePath);
+
+            if(fileExt == '.html'){
+                //we know the file is html
+                fs.exists(filePath, (exists) => {
+                    //Callback function
+                        if(!exists){
+                            res.statusCode = 404;
+                            res.setHeader('Content-Type','text/html' );
+                            res.end('<html><body><h1>Error 404: ' + fileUrl + '<h1></body></html>');
+
+                            return;
+                        }
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'text/html');
+                        fs.createReadStream(filePath).pipe(res);    //taken a file and constructed it into the response
+
+                }) // checking if the file exist
+            }
+            else {
+                    //If the file is not an html 
+                    res.statusCode = 404;
+                    res.setHeader('Content-Type','text/html' );
+                    res.end('<html><body><h1>Error 404: ' + fileUrl + ' not an HTML file <h1></body></html>');
+            
+                    return;
+            }
+    }
+    else {
+        //Error
+        res.statusCode = 404;
+        res.setHeader('Content-Type','text/html' );
+        res.end('<html><body><h1>Error 404: ' + fileUrl + ' not supported<h1></body></html>');
+
+        return;
+    }
 
     //respond message (200 == Okay)
     res.statusCode = 200;
